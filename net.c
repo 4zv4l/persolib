@@ -33,6 +33,7 @@ tcp_listen(char host[static 1])
     string ip; u32 port;
     if (!parse_ip(dup_host, &ip, &port))
     {
+        free(dup_host);
         close(connfd);
         return log_warn("parse_ip(host): wrong ip format", host), 0;
     }
@@ -85,6 +86,7 @@ tcp_connect(char host[static 1])
     string ip; u32 port;
     if (!parse_ip(dup_host, &ip, &port))
     {
+        free(dup_host);
         close(connfd);
         return log_warn("parse_ip(%s): wrong ip format", host), 0;
     }
