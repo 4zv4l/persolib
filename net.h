@@ -16,7 +16,7 @@
  * put the ip in ip
  * convert the port using `atoi` and put it in port
  */
-void parse_ip(char host[static 1], string *ip, u32 *port);
+bool parse_ip(char host[static 1], string *ip, u32 *port);
 
 /*
  * listen on ip:port

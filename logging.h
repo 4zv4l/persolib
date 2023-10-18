@@ -31,8 +31,9 @@
 /*
  * init the logger files
  * default is logging to stderr
+ * return false if failed to initialize
  */
-void init_logger(string *files);
+bool init_logger(string *files);
 
 /*
  * log to stderr and works like printf

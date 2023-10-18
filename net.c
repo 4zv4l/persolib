@@ -1,12 +1,16 @@
 #include "net.h"
 
-void
+bool
 parse_ip(char host[static 1], string *ip, u32 *port)
 {
-    string bak;
+    string sport;
 
-    *ip = strtok_r(host, ":", &bak);
-    *port = atoi(strtok_r(0, ":", &bak));
+    *ip = strtok(host, ":");
+    sport = strtok(0, ":");
+    if (!sport) return false;
+
+    *port = atoi(sport);
+    return true;
 }
 
 i32
@@ -18,10 +22,11 @@ tcp_listen(char host[static 1])
 
     string dup_host = strdup(host);
     if (!dup_host)
-        return log_warn("strdup(): couldnt clone host addr"), 0;
+        return log_warn("strdup(%s): couldnt clone host addr", host), 0;
 
     string ip; u32 port;
-    parse_ip(dup_host, &ip, &port);
+    if (!parse_ip(dup_host, &ip, &port))
+        return log_warn("parse_ip(host): wrong ip format", host), 0;
 
     struct sockaddr_in addr =
     {
@@ -54,10 +59,11 @@ tcp_connect(char host[static 1])
 
     string dup_host = strdup(host);
     if (!dup_host)
-        return log_warn("strdup(): couldnt clone host addr"), 0;
+        return log_warn("strdup(%s): couldnt clone host addr", host), 0;
 
     string ip; u32 port;
-    parse_ip(dup_host, &ip, &port);
+    if (!parse_ip(dup_host, &ip, &port))
+        return log_warn("parse_ip(%s): wrong ip format", host), 0;
 
     struct sockaddr_in addr =
     {
@@ -69,8 +75,8 @@ tcp_connect(char host[static 1])
     free(dup_host);
 
     if (connect(connfd, (struct sockaddr*)&addr, sizeof(addr)) == -1)
-        return log_warn("connect(): %s", strerror(errno)), 0;
-    log_info("connect(): success !");
+        return log_warn("connect(%s): %s", host, strerror(errno)), 0;
+    log_info("connect(%s): success !", host);
 
     return connfd;
 }

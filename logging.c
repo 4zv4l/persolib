@@ -3,18 +3,21 @@
 // array of FILE to log to, default is stderr
 string *LOG_FILES = (string[]){ 0 };
 
-void
+bool
 init_logger(string *files)
 {
     if (files)
     {
         usize length = ptr_len(files, sizeof(files));
         string *tmp = malloc(sizeof(char*) * (length + 1));
+        if (!tmp)
+            return fprintf(stderr, "couldnt allocate for the logger"), false;
         for (usize i = 0; i < length; i++)
             tmp[i] = strdup(files[i]);
         tmp[length] = 0;
         LOG_FILES = tmp;
     }
+    return true;
 }
 
 void
