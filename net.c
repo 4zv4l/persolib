@@ -89,7 +89,7 @@ send_line(i32 connfd, string data)
     if (!tmp)
         return log_warn("write(): couldnt send newline"), 0;
 
-    log_info("send_line(): %llu", len);
+    log_info("send_line(): \"%s\" + \"\\n\" (%llu)", data, len);
     return len;
 }
 
@@ -106,7 +106,7 @@ recv_line(i32 connfd)
     {
         if (tmp[idx] == '\n') {
             tmp[idx+1] = 0;
-            log_info("recv_line(): %s", tmp);
+            log_info("recv_line(): %.*s", strlen(tmp)-2, tmp);
             return tmp;
         }
 
