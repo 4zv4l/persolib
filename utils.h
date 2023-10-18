@@ -47,4 +47,10 @@ usize ptr_len(void *data, usize size);
  */
 string chomp(char str[static 1]);
 
+/*
+ * return the index of c in str
+ * or 0 if not found
+ */
+usize index_of(char c, char str[static 1]);
+
 #endif

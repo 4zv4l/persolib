@@ -80,10 +80,10 @@ send_line(i32 connfd, string data)
 {
     usize idx = 0;
     usize tmp = 0;
-    usize len = (i32)(strchr(data, '\n') - data) || strlen(data);
+    usize len = index_of('\n', data);
 
-    if (len < strlen(data))
-        log_info("found '\\n' at index %llu", len);
+    if (len) log_info("found '\\n' at index %llu", len);
+    else len = strlen(data);
 
     idx += tmp = write(connfd, data, len);
     if (!tmp)

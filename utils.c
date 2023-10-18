@@ -32,3 +32,11 @@ chomp(char str[static 1])
         *endln = 0;
     return str;
 }
+
+usize
+index_of(char c, char str[static 1])
+{
+    string tmp = strchr(str, '\n');
+    if (tmp) return (i32)(tmp - str);
+    return 0;
+}
