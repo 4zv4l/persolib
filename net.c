@@ -18,15 +18,24 @@ tcp_listen(char host[static 1])
 {
     i32 connfd = socket(AF_INET, SOCK_STREAM, 0);
     if (connfd == -1)
+    {
+        close(connfd);
         return log_warn("socket(): %s", strerror(errno)), 0;
+    }
 
     string dup_host = strdup(host);
     if (!dup_host)
+    {
+        close(connfd);
         return log_warn("strdup(%s): couldnt clone host addr", host), 0;
+    }
 
     string ip; u32 port;
     if (!parse_ip(dup_host, &ip, &port))
+    {
+        close(connfd);
         return log_warn("parse_ip(host): wrong ip format", host), 0;
+    }
 
     struct sockaddr_in addr =
     {
@@ -37,15 +46,24 @@ tcp_listen(char host[static 1])
     free(dup_host);
 
     if (setsockopt(connfd, SOL_SOCKET, SO_REUSEADDR, &(int){1}, sizeof(int)) == -1)
+    {
+        close(connfd);
         return log_warn("setsockopt(): %s", strerror(errno)), 0;
+    }
     log_info("setsockopt(): success !");
 
     if (bind(connfd, (struct sockaddr *)&addr, sizeof(addr)) == -1)
+    {
+        close(connfd);
         return log_warn("bind(): %s", strerror(errno)), 0;
+    }
     log_info("bind(): success !");
 
     if (listen(connfd, 0) == -1)
+    {
+        close(connfd);
         return log_warn("listen(): %s", strerror(errno)), 0;
+    }
 
     return connfd;
 }
@@ -59,11 +77,17 @@ tcp_connect(char host[static 1])
 
     string dup_host = strdup(host);
     if (!dup_host)
+    {
+        close(connfd);
         return log_warn("strdup(%s): couldnt clone host addr", host), 0;
+    }
 
     string ip; u32 port;
     if (!parse_ip(dup_host, &ip, &port))
+    {
+        close(connfd);
         return log_warn("parse_ip(%s): wrong ip format", host), 0;
+    }
 
     struct sockaddr_in addr =
     {
@@ -75,7 +99,10 @@ tcp_connect(char host[static 1])
     free(dup_host);
 
     if (connect(connfd, (struct sockaddr*)&addr, sizeof(addr)) == -1)
+    {
+        close(connfd);
         return log_warn("connect(%s): %s", host, strerror(errno)), 0;
+    }
     log_info("connect(%s): success !", host);
 
     return connfd;
@@ -108,29 +135,41 @@ recv_line(i32 connfd)
 {
     usize idx = 0;
     usize size = 128;
-    string tmp = malloc(size);
-    if (!tmp)
+    string line = malloc(size), tmp;
+    if (!line)
         return log_warn("malloc(): couldnt allocate memory for tmp"), (string)0;
 
-    while(read(connfd, tmp+idx, 1))
+    while(read(connfd, line+idx, 1))
     {
-        if (tmp[idx] == '\n') {
-            tmp = realloc(tmp, idx+2);
+        if (line[idx] == '\n') {
+            // resize the string to be as small as possible
+            tmp = realloc(line, idx+2);
             if (!tmp)
+            {
+                free(line);
                 return log_warn("realloc(): couldnt realloc tmp"), (string)0;
-            log_info("recv_line(): \"%.*s\\n\" (%llu)", idx, tmp, idx+1);
-            tmp[idx+1] = 0;
-            return tmp;
+            }
+            line = tmp;
+            log_info("recv_line(): \"%.*s\\n\" (%llu)", idx, line, idx+1);
+            line[idx+1] = 0;
+            return line;
         }
 
         idx += 1;
+        // resize if the incoming data is too big
         if (idx > size)
         {
             size += 128;
-            tmp = realloc(tmp, size);
+            tmp = realloc(line, size);
             if (!tmp)
+            {
+                free(line);
                 return log_warn("realloc(): couldnt realloc tmp"), (string)0;
+            }
+            line = tmp;
         }
     }
+
+    free(line);
     return 0;
 }
