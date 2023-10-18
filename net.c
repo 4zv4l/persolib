@@ -80,8 +80,9 @@ send_line(i32 connfd, string data)
 {
     usize len = 0;
     usize tmp = 0;
+    usize idx = strchr(data, '\n') - data;
 
-    len += tmp = write(connfd, data, strlen(data));
+    len += tmp = write(connfd, data, idx ? idx : strlen(data));
     if (!tmp)
         return log_warn("write(): couldnt send data"), 0;
 
@@ -89,7 +90,7 @@ send_line(i32 connfd, string data)
     if (!tmp)
         return log_warn("write(): couldnt send newline"), 0;
 
-    log_info("send_line(): \"%s\\n\" (%llu)", data, len);
+    log_info("send_line(): \"%.*s\\n\" (%llu)", idx ? idx : strlen(data), data, len);
     return len;
 }
 
