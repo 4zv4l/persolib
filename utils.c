@@ -40,3 +40,35 @@ index_of(char c, char str[static 1])
     if (tmp) return (i32)(tmp - str);
     return 0;
 }
+
+void
+bytes_to_hex(char hex[static 1], const char str[static 1], int strlen)
+{
+    for (int i = 0; i < strlen; i++)
+    {
+        hex += sprintf(hex, "%02x", str[i]);
+    }
+    *hex = 0;
+}
+
+void
+hex_to_bytes(char str[static 1], const char hex[static 1], int hexlen)
+{
+    for (int i = 0; i < hexlen/2; i++)
+    {
+        str += sscanf(hex, "%hhx", str);
+        hex += 2;
+    }
+}
+
+void
+show_strmem(char str[static 1], int strlen)
+{
+    for (int i = 0; i <= strlen; i++)
+    {
+        if (str[i] >= 32 && str[i] <= 126)
+            printf("%p -> '%c'\n", &str[i], str[i]);
+        else
+            printf("%p -> %d\n", &str[i], str[i]);
+    }
+}

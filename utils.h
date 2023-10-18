@@ -53,4 +53,24 @@ string chomp(char str[static 1]);
  */
 usize index_of(char c, char str[static 1]);
 
+/*
+ * convert str to hexa
+ * store it in hex
+ * hex should be at least 2x size of str
+ */
+void bytes_to_hex(char hex[static 1], const char str[static 1], int strlen);
+
+/*
+ * convert hex to bytes
+ * store it in str
+ * str should be at least 1/2 size of hex
+ */
+void hex_to_bytes(char str[static 1], const char hex[static 1], int hexlen);
+
+/*
+ * show every char in a string with their address
+ * show printable character and if not printable show number
+ */
+void show_strmem(char str[static 1], int strlen);
+
 #endif
