@@ -109,7 +109,7 @@ recv_line(i32 connfd)
             tmp = realloc(tmp, idx+1);
             if (!tmp)
                 return log_warn("realloc(): couldnt realloc tmp"), (string)0;
-            log_info("recv_line(): \"%.*s\\n\"", idx, tmp);
+            log_info("recv_line(): \"%.*s\\n\" (%llu)", idx, tmp, idx);
             return tmp;
         }
 
