@@ -78,19 +78,22 @@ tcp_connect(char host[static 1])
 usize
 send_line(i32 connfd, string data)
 {
-    usize len = 0;
+    usize idx = 0;
     usize tmp = 0;
-    usize idx = strchr(data, '\n') - data;
+    usize len = (i32)(strchr(data, '\n') - data) || strlen(data);
 
-    len += tmp = write(connfd, data, idx ? idx : strlen(data));
+    if (len < strlen(data))
+        log_info("found '\\n' at index %llu", len);
+
+    idx += tmp = write(connfd, data, len);
     if (!tmp)
         return log_warn("write(): couldnt send data"), 0;
 
-    len += tmp = write(connfd, "\n", 1);
+    idx += tmp = write(connfd, "\n", 1);
     if (!tmp)
         return log_warn("write(): couldnt send newline"), 0;
 
-    log_info("send_line(): \"%.*s\\n\" (%llu)", idx ? idx : strlen(data), data, len);
+    log_info("send_line(): \"%.*s\\n\" (%llu)", len, data, idx);
     return len;
 }
 
