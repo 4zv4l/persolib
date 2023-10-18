@@ -106,7 +106,7 @@ recv_line(i32 connfd)
     {
         if (tmp[idx] == '\n') {
             tmp[idx+1] = 0;
-            log_info("recv_line(): %.*s", strlen(tmp)-2, tmp);
+            log_info("recv_line(): %.*s", strlen(tmp)-1, tmp);
             return tmp;
         }
 
