@@ -48,7 +48,6 @@ bytes_to_hex(char hex[static 1], const char str[static 1], int strlen)
     {
         hex += sprintf(hex, "%02x", str[i]);
     }
-    *hex = 0;
 }
 
 void
