@@ -105,11 +105,11 @@ recv_line(i32 connfd)
     while(read(connfd, tmp+idx, 1))
     {
         if (tmp[idx] == '\n') {
-            tmp[idx+1] = 0;
-            tmp = realloc(tmp, idx+1);
+            tmp = realloc(tmp, idx+2);
             if (!tmp)
                 return log_warn("realloc(): couldnt realloc tmp"), (string)0;
-            log_info("recv_line(): \"%.*s\\n\" (%llu)", idx, tmp, idx);
+            log_info("recv_line(): \"%.*s\\n\" (%llu)", idx, tmp, idx+1);
+            tmp[idx+1] = 0;
             return tmp;
         }
 
