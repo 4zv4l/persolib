@@ -73,4 +73,10 @@ void hex_to_bytes(char str[static 1], const char hex[static 1], int hexlen);
  */
 void show_strmem(char str[static 1], int strlen);
 
+/*
+ * free array of string
+ * if n is -1 then free until null ptr
+ */
+void free_arrayptr(string *lines, usize n);
+
 #endif
