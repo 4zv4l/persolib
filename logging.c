@@ -23,7 +23,7 @@ init_logger(string *files)
 void
 deinit_logger(void)
 {
-    free_arrayptr(LOG_FILES, -1);
+    free_ptrarrayptr(LOG_FILES, -1);
 }
 
 void
