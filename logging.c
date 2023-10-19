@@ -29,6 +29,9 @@ deinit_logger(void)
 void
 log_format(const char tag[static 4], const char msg[static 1], ...)
 {
+    if (!LOG_FILES[0])
+        return;
+
     va_list args;
     va_start(args, msg);
     char buff[2048] = {0};
