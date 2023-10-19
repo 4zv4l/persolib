@@ -14,6 +14,7 @@ usize
 ptr_len(void *data, usize size)
 {
     usize zero = 0, count = 0;
+
     for (;;)
     {
         if (memcmp(data, &zero, size) == 0)
@@ -21,6 +22,7 @@ ptr_len(void *data, usize size)
         data+=size;
         count++;
     }
+
     return count;
 }
 
@@ -30,6 +32,7 @@ chomp(char str[static 1])
     char *endln = &str[strlen(str)-1];
     if (*endln == '\n')
         *endln = 0;
+
     return str;
 }
 
@@ -37,7 +40,9 @@ usize
 index_of(char c, char str[static 1])
 {
     string tmp = strchr(str, '\n');
-    if (tmp) return (i32)(tmp - str);
+    if (tmp)
+        return (i32)(tmp - str);
+
     return 0;
 }
 

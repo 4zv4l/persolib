@@ -7,7 +7,8 @@ parse_ip(char host[static 1], string *ip, u32 *port)
 
     *ip = strtok(host, ":");
     sport = strtok(0, ":");
-    if (!sport) return false;
+    if (!sport)
+        return false;
 
     *port = atoi(sport);
     return true;
@@ -117,8 +118,10 @@ send_line(i32 connfd, string data)
     usize tmp = 0;
     usize len = index_of('\n', data);
 
-    if (len) log_info("found '\\n' at index %llu", len);
-    else len = strlen(data);
+    if (len)
+        log_info("found '\\n' at index %llu", len);
+    else
+        len = strlen(data);
 
     idx += tmp = write(connfd, data, len);
     if (!tmp)

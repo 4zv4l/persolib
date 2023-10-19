@@ -10,18 +10,29 @@
 
 #include "types.h"
 
+// foreach for array (known size)
 #define foreach(var, arr)                                                   \
     for(                                                                    \
-            usize index = 0, done = 1, length = sizeof(arr)/sizeof(arr[0]);\
+            usize index = 0, done = 1, length = sizeof(arr)/sizeof(arr[0]); \
             index < length;                                                 \
             done = 1, index++                                               \
     )                                                                       \
     for(typeof(arr[0]) var = arr[index]; done; done = 0)
 
+// foreach for pointer (null terminated)
 #define pforeach(var, ptr)                                                  \
     for(                                                                    \
-            usize index = 0, done = 1;                                     \
+            usize index = 0, done = 1;                                      \
             ptr[index] != 0;                                                \
+            done = 1, index++                                               \
+    )                                                                       \
+    for(typeof(ptr[0]) var = ptr[index]; done; done = 0)
+
+// foreach for pointer (known length)
+#define plforeach(var, ptr, len)                                            \
+    for(                                                                    \
+            usize index = 0, done = 1;                                      \
+            index < len;                                                    \
             done = 1, index++                                               \
     )                                                                       \
     for(typeof(ptr[0]) var = ptr[index]; done; done = 0)
@@ -78,5 +89,4 @@ void show_strmem(char str[static 1], int strlen);
  * if n is -1 then free until null ptr
  */
 void free_arrayptr(string *lines, usize n);
-
 #endif

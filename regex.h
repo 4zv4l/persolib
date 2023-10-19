@@ -6,7 +6,7 @@
 #include <regex.h>
 
 #include "types.h"
+#include "logging.h"
 
 string *match(char re[static 1], const char str[static 1], u32 *nmatch, u32 opt);
-
 #endif

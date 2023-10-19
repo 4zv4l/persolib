@@ -45,8 +45,10 @@ log_format(const char tag[static 4], const char msg[static 1], ...)
     pforeach(filename, LOG_FILES) {
         FILE *out;
     
-        if (strcmp(filename, "stderr") == 0) out = stderr;
-        else out = fopen(filename, "a+");
+        if (strcmp(filename, "stderr") == 0)
+            out = stderr;
+        else
+            out = fopen(filename, "a+");
 
         if (!out)
         {

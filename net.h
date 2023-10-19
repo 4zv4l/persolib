@@ -46,5 +46,4 @@ usize send_line(i32 connfd, string data);
  * return string(heap) containing newline
  */
 string recv_line(i32 connfd);
-
 #endif
