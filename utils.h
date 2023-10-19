@@ -13,7 +13,7 @@
 // foreach for array (known size)
 #define foreach(var, arr)                                                   \
     for(                                                                    \
-            usize index = 0, done = 1, length = sizeof(arr)/sizeof(arr[0]); \
+            usize index = 0, done = 1, length = ARRAY_LEN(arr)); \
             index < length;                                                 \
             done = 1, index++                                               \
     )                                                                       \
@@ -37,6 +37,7 @@
     )                                                                       \
     for(typeof(ptr[0]) var = ptr[index]; done; done = 0)
 
+// get stack array length
 #define ARRAY_LEN(arr) sizeof((arr))/sizeof((*arr))
 
 /*
@@ -88,10 +89,11 @@ void show_strmem(char str[static 1], int strlen);
 
 /*
  * free array of pointer
- * if n is -1 then free until null ptr
+ * array must be stack array (known size)
+ * otherwise use free_ptrarrayptr
  */
-void free_arrayptr_(string *lines, usize n);
 #define free_arrayptr(arr) free_arrayptr_(arr, ARRAY_LEN(arr))
+void free_arrayptr_(string *lines, usize n);
 
 /*
  * free array of pointer
