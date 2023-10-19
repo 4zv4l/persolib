@@ -37,6 +37,8 @@
     )                                                                       \
     for(typeof(ptr[0]) var = ptr[index]; done; done = 0)
 
+#define ARRAY_LEN(arr) sizeof((arr))/sizeof((*arr))
+
 /*
  * duplicate data structure
  * return a pointer to that data
@@ -85,8 +87,16 @@ void hex_to_bytes(char str[static 1], const char hex[static 1], int hexlen);
 void show_strmem(char str[static 1], int strlen);
 
 /*
- * free array of string
+ * free array of pointer
  * if n is -1 then free until null ptr
  */
-void free_arrayptr(string *lines, usize n);
+void free_arrayptr_(string *lines, usize n);
+#define free_arrayptr(arr) free_arrayptr_(arr, ARRAY_LEN(arr))
+
+/*
+ * free array of pointer
+ * if n is -1 then free until null ptr
+ * free the array as well
+ */
+void free_ptrarrayptr(string *array, usize length);
 #endif

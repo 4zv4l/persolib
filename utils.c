@@ -78,7 +78,21 @@ show_strmem(char str[static 1], int strlen)
 }
 
 void
-free_arrayptr(string *array, usize length)
+free_arrayptr_(string *array, usize length)
+{
+    if (length == -1)
+    {
+        for (usize i = 0; array[i] != 0; i++)
+            free(array[i]);
+    } else
+    {
+        for (usize i = 0; i < length; i++)
+            free(array[i]);
+    }
+}
+
+void
+free_ptrarrayptr(string *array, usize length)
 {
     if (length == -1)
     {
