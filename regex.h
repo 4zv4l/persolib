@@ -8,5 +8,21 @@
 #include "types.h"
 #include "logging.h"
 
-string *match(char re[static 1], const char str[static 1], u32 *nmatch, u32 opt);
+/*
+ * helper for match_
+ */
+// default using REG_EXTENDED
+#define match_defltopt(re, str, groups) match_(re, str, groups, ARRAY_LEN(groups), REG_EXTENDED)
+#define match_opt(re, str, groups, opt) match_(re, str, groups, ARRAY_LEN(groups), opt)
+#define match_select(_1, _2, _3, _4, FUNC, ...) FUNC
+#define match(...) match_select(__VA_ARGS__, match_opt, match_defltopt)(__VA_ARGS__)
+
+/*
+ * put matched data in groups
+ * return true if match
+ * return false if doesnt match
+ *
+ * strings stored in groups must be freed
+ */
+bool match_(char re[static 1], const char str[static 1], string *groups, usize ngroup, u32 opt);
 #endif

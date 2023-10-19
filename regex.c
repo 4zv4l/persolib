@@ -1,21 +1,15 @@
 #include "regex.h"
 
-string*
-match(char re[static 1], const char str[static 1], u32 *nmatch, u32 opt)
+bool
+match_(char re[static 1], const char str[static 1], string *groups, usize ngroup, u32 opt)
 {
     regex_t regex = {0};
-    regmatch_t *matches = malloc(sizeof(regmatch_t) * (*nmatch));
-    char **groups = calloc(*nmatch, sizeof(char*));
+    usize match = {0};
+    regmatch_t *matches = malloc(sizeof(regmatch_t) * ngroup);
 
     if (!matches)
     {
         log_warn("malloc(): couldnt alloc memory for matches");
-        goto cleanup;
-    }
-    if (!groups)
-    {
-
-        log_warn("malloc(): couldnt alloc memory for groups");
         goto cleanup;
     }
     if (regcomp(&regex, re, opt))
@@ -24,27 +18,17 @@ match(char re[static 1], const char str[static 1], u32 *nmatch, u32 opt)
         log_warn("regcomp(): '%s' couldnt compile", re);
         goto cleanup;
     }
-    if (regexec(&regex, str, *nmatch, matches, 0))
+    if (regexec(&regex, str, ngroup, matches, 0))
     {
         log_warn("regexec(): '%s' doesnt match", str);
         goto all_cleanup;
     }
+    log_info("regexec(): '%s' match", str);
 
-    for (int match = 0; match < *nmatch; match++)
+    for (match = 0; match < ngroup; match++)
     {
         if (matches[match].rm_so == -1)
-        {
-            char **tmp = realloc(groups, sizeof(char*) * match);
-            if (!tmp)
-            {
-                log_warn("realloc(): couldnt resize groups");
-                goto all_cleanup;
-            }
-
-            *nmatch = match;
-            groups = tmp;
             break;
-        }
 
         int length = matches[match].rm_eo - matches[match].rm_so;
         groups[match] = malloc(length+1);
@@ -60,14 +44,13 @@ match(char re[static 1], const char str[static 1], u32 *nmatch, u32 opt)
 
     free(matches);
     regfree(&regex);
-    return groups;
+    return true;
 
 all_cleanup:
     regfree(&regex);
 cleanup:
-    for (int i = 0; i < *nmatch && groups && groups[i]; i++)
+    for (int i = 0; i < match; i++)
         free(groups[i]);
-    free(groups);
     free(matches);
-    return 0;
+    return false;
 }
