@@ -21,6 +21,12 @@ init_logger(string *files)
 }
 
 void
+deinit_logger(void)
+{
+    free_arrayptr(LOG_FILES, -1);
+}
+
+void
 log_format(const char tag[static 4], const char msg[static 1], ...)
 {
     va_list args;

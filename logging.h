@@ -36,6 +36,11 @@
 bool init_logger(string *files);
 
 /*
+ * free the logger if it has been initialized
+ */
+void deinit_logger(void);
+
+/*
  * log to stderr and works like printf
  * you can use the macros:
  * `log_info`
