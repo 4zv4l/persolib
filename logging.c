@@ -4,11 +4,11 @@
 string *LOG_FILES = (string[]){ 0 };
 
 bool
-init_logger(string *files)
+init_logger(string files[])
 {
     if (files)
     {
-        usize length = ptr_len(files, sizeof(files));
+        usize length = ptr_len(files, sizeof(&files[0]));
         string *tmp = malloc(sizeof(char*) * (length + 1));
         if (!tmp)
             return fprintf(stderr, "couldnt allocate for the logger"), false;
@@ -23,6 +23,8 @@ init_logger(string *files)
 void
 deinit_logger(void)
 {
+    if (!LOG_FILES[0])
+        return;
     free_ptrarrayptr(LOG_FILES, -1);
 }
 
