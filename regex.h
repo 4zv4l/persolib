@@ -6,7 +6,10 @@
 #include <regex.h>
 
 #include "types.h"
+
+#ifndef LOGGING
 #include "logging.h"
+#endif
 
 /*
  * helper for match_

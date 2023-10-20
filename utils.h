@@ -10,6 +10,10 @@
 
 #include "types.h"
 
+#ifndef LOGGING
+#include "logging.h"
+#endif
+
 // foreach for array (known size)
 #define foreach(var, arr)                                                   \
     for(                                                                    \
@@ -39,6 +43,13 @@
 
 // get stack array length
 #define ARRAY_LEN(arr) sizeof((arr))/sizeof((*arr))
+
+/*
+ * works like printf
+ * print to stderr
+ * and exit the program with code 255
+ */
+#define die(...) (fprintf(stderr, __VA_ARGS__), fputc('\n',stderr), deinit_logger(), exit(255))
 
 /*
  * duplicate data structure
@@ -93,12 +104,12 @@ void show_strmem(char str[static 1], int strlen);
  * otherwise use free_ptrarrayptr
  */
 #define free_arrayptr(arr) free_arrayptr_(arr, ARRAY_LEN(arr))
-void free_arrayptr_(string *lines, usize n);
+void free_arrayptr_(string lines[], usize n);
 
 /*
  * free array of pointer
  * if n is -1 then free until null ptr
  * free the array as well
  */
-void free_ptrarrayptr(string *array, usize length);
+void free_ptrarrayptr(string array[], usize length);
 #endif

@@ -9,7 +9,10 @@
 #include <errno.h>
 
 #include "types.h"
+
+#ifndef UTILS
 #include "utils.h"
+#endif
 
 /*
  * log to stderr showing the level and arguments
@@ -22,18 +25,11 @@
 #define log_error(...) log_format("ERROR", __VA_ARGS__)
 
 /*
- * works like printf
- * print to stderr
- * and exit the program with code 255
- */
-#define die(...) (fprintf(stderr, __VA_ARGS__), fputc('\n',stderr), exit(255))
-
-/*
  * init the logger files
  * default is logging to stderr
  * return false if failed to initialize
  */
-bool init_logger(string *files);
+bool init_logger(string files[]);
 
 /*
  * free the logger if it has been initialized
