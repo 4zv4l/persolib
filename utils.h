@@ -112,4 +112,15 @@ void free_arrayptr_(string lines[], usize n);
  * free the array as well
  */
 void free_ptrarrayptr(string array[], usize length);
+
+/*
+ * read a line from file f
+ * store it in line
+ * if line is nullptr then allocate memory
+ * otherwise use it or realloc it if not big enough (so no stack array)
+ * must be freed afterward (after you finished reading the lines you want)
+ *
+ * return 0 on error/eof
+ */
+string fget_line(string *line, FILE f[static 1]);
 #endif

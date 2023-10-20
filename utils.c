@@ -105,3 +105,12 @@ free_ptrarrayptr(string array[], usize length)
     }
     free(array);
 }
+
+string
+fget_line(string *line, FILE f[static 1])
+{
+    u64 length = *line ? strlen(*line) : 0;
+    if (getline(line, &length, f) == -1)
+        return 0;
+    return *line;
+}
