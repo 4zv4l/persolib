@@ -50,14 +50,14 @@ log_format(const char tag[static 4], const char msg[static 1], ...)
     pforeach(filename, LOG_FILES) {
         FILE *out;
     
-        if (strcmp(filename, "stderr") == 0)
+        if (strcmp(*filename, "stderr") == 0)
             out = stderr;
         else
-            out = fopen(filename, "a+");
+            out = fopen(*filename, "a+");
 
         if (!out)
         {
-            fprintf(stderr, "log error %s: %s", filename, strerror(errno));
+            fprintf(stderr, "log error %s: %s", *filename, strerror(errno));
             continue;
         }
 

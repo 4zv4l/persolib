@@ -36,6 +36,58 @@ chomp(char str[static 1])
     return str;
 }
 
+string*
+split(string str, char sep)
+{
+    usize ntime      = str_count(str, sep) + 1;
+    string *splitted = calloc(ntime+1, sizeof(string));
+    string s         = strdup(str), bak = s;
+
+    if (!ntime)
+    {
+        log_warn("not separator found in string");
+        goto cleanup;
+    }
+    if (!splitted)
+    {
+        log_warn("couldnt allocate memory for splitted");
+        goto cleanup;
+    }
+    if (!s)
+    {
+        log_warn("couldnt allocate memory for backup str");
+        goto cleanup;
+    }
+
+    for (usize i = 0; i < ntime; i++)
+    {
+        string tok = strtok(s, (char[]){sep, 0});
+        if (!tok)
+        {
+            log_warn("token empty");
+            return splitted;
+        }
+        splitted[i] = strdup(tok);
+        if (!splitted[i])
+        {
+            log_warn("couldnt allocate memory for splitted[%d]", i);
+            goto cleanup;
+        }
+
+        s = 0;
+    }
+
+    free(bak);
+    return splitted;
+
+cleanup:
+    for (usize i = 0; splitted && splitted[i]; i++)
+        free(splitted[i]);
+    free(splitted);
+    free(s);
+    return 0;
+}
+
 usize
 index_of(char c, char str[static 1])
 {
@@ -44,6 +96,18 @@ index_of(char c, char str[static 1])
         return (i32)(tmp - str);
 
     return 0;
+}
+
+usize
+str_count(string str, char c)
+{
+    usize ntime = 0;
+    for (usize i = 0; str[i] != 0; i++)
+    {
+        if (str[i] == c)
+            ntime++;
+    }
+    return ntime;
 }
 
 void

@@ -21,7 +21,7 @@
             index < length;                                                 \
             done = 1, index++                                               \
     )                                                                       \
-    for(typeof(arr[0]) var = arr[index]; done; done = 0)
+    for(typeof(&arr[0]) var = &arr[index]; done; done = 0)
 
 // foreach for pointer (null terminated)
 #define pforeach(var, ptr)                                                  \
@@ -30,7 +30,7 @@
             ptr[index] != 0;                                                \
             done = 1, index++                                               \
     )                                                                       \
-    for(typeof(ptr[0]) var = ptr[index]; done; done = 0)
+    for(typeof(&ptr[0]) var = &ptr[index]; done; done = 0)
 
 // foreach for pointer (known length)
 #define plforeach(var, ptr, len)                                            \
@@ -39,7 +39,7 @@
             index < len;                                                    \
             done = 1, index++                                               \
     )                                                                       \
-    for(typeof(ptr[0]) var = ptr[index]; done; done = 0)
+    for(typeof(&ptr[0]) var = &ptr[index]; done; done = 0)
 
 // get stack array length
 #define ARRAY_LEN(arr) sizeof((arr))/sizeof((*arr))
@@ -73,10 +73,21 @@ usize ptr_len(void *data, usize size);
 string chomp(char str[static 1]);
 
 /*
+ * split `str` using `sep`
+ * return array of string
+ */
+string* split(string str, char sep);
+
+/*
  * return the index of c in str
  * or 0 if not found
  */
 usize index_of(char c, char str[static 1]);
+
+/*
+ * return how many times `c` is in `str`
+ */
+usize str_count(string str, char c);
 
 /*
  * convert str to hexa
