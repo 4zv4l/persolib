@@ -9,15 +9,18 @@ init_logger(string files[])
     if (files)
     {
         usize length = ptr_len(files, sizeof(&files[0]));
-        string *tmp = malloc(sizeof(char*) * (length + 1));
+        string *tmp = malloc((length+1) * sizeof(*tmp));
         if (!tmp)
             return fprintf(stderr, "couldnt allocate for the logger"), false;
+
         for (usize i = 0; i < length; i++)
             tmp[i] = strdup(files[i]);
         tmp[length] = 0;
+
         LOG_FILES = tmp;
+        return true;
     }
-    return true;
+    return false;
 }
 
 void

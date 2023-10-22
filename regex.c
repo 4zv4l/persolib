@@ -5,7 +5,7 @@ match_(char re[static 1], const char str[static 1], string *groups, usize ngroup
 {
     regex_t regex = {0};
     usize match = {0};
-    regmatch_t *matches = malloc(sizeof(regmatch_t) * ngroup);
+    regmatch_t *matches = malloc(ngroup * sizeof(*matches));
 
     if (!matches)
     {
@@ -31,7 +31,7 @@ match_(char re[static 1], const char str[static 1], string *groups, usize ngroup
             break;
 
         int length = matches[match].rm_eo - matches[match].rm_so;
-        groups[match] = malloc(length+1);
+        groups[match] = malloc((length+1) * sizeof(*groups[match]));
         if (!groups[match])
         {
             log_warn("malloc(): couldnt alloc memory for groups[%d]", match);

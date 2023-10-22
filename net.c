@@ -140,7 +140,7 @@ recv_line(i32 connfd)
 {
     usize idx = 0;
     usize size = 128;
-    string line = malloc(size), tmp;
+    string line = malloc(size * sizeof(*line)), tmp;
     if (!line)
         return log_warn("malloc(): couldnt allocate memory for tmp"), (string)0;
 
