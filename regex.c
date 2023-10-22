@@ -5,11 +5,11 @@ match_(char re[static 1], const char str[static 1], string *groups, usize ngroup
 {
     regex_t regex = {0};
     usize match = {0};
-    regmatch_t *matches = malloc(ngroup * sizeof(*matches));
+    regmatch_t *matches = calloc(ngroup, sizeof(*matches));
 
     if (!matches)
     {
-        log_warn("malloc(): couldnt alloc memory for matches");
+        log_warn("calloc(): couldnt alloc memory for matches");
         goto cleanup;
     }
     if (regcomp(&regex, re, opt))
