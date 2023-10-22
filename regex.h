@@ -12,22 +12,13 @@
 #endif
 
 /*
- * helper for match_
- */
-// default using REG_EXTENDED
-#define match_defltopt(re, str, groups) match_(re, str, groups, ARRAY_LEN(groups), REG_EXTENDED)
-#define match_opt(re, str, groups, opt) match_(re, str, groups, ARRAY_LEN(groups), opt)
-#define match_select(_1, _2, _3, _4, FUNC, ...) FUNC
-
-
-/*
- * put matched data in groups (must be stack array)
- * groups must be the size of match you want to get back
+ * put matched data in groups
+ * will capture at most `length`
  * return true if match
  * return false if doesnt match
  *
  * strings stored in groups must be freed
  */
-#define match(...) match_select(__VA_ARGS__, match_opt, match_defltopt)(__VA_ARGS__)
+#define match(re, str, groups, length) match_(re, str, groups, length, REG_EXTENDED)
 bool match_(char re[static 1], const char str[static 1], string *groups, usize ngroup, u32 opt);
 #endif
