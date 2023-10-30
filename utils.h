@@ -14,6 +14,12 @@
 #include "logging.h"
 #endif
 
+// if lower than -std=c2x c23
+#if __STDC_VERSION__ <= 202311L
+    #define bool _Bool
+    enum { false, true };
+#endif
+
 // foreach for array (known size)
 #define foreach(var, arr)                                                   \
     for(                                                                    \
