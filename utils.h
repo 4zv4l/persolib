@@ -47,6 +47,9 @@
     )                                                                       \
     for(typeof(&ptr[0]) var = &ptr[index]; done; done = 0)
 
+// infinite loop
+#define loop for(;;)
+
 // get stack array length
 #define ARRAY_LEN(arr) sizeof((arr))/sizeof((*arr))
 
