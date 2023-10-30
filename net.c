@@ -111,6 +111,19 @@ tcp_connect(char host[static 1])
     return connfd;
 }
 
+i32
+tcp_accept(i32 serverfd)
+{
+    struct sockaddr caddr = {0};
+    socklen_t caddr_size  = {0};
+
+    i32 clientfd = accept(serverfd, &caddr, &caddr_size);
+
+    if (clientfd == -1)
+        return log_warn("accept(): %s", strerror(errno)), 0;
+    return clientfd;
+}
+
 usize
 send_line(i32 connfd, string data)
 {

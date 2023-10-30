@@ -36,6 +36,12 @@ i32 tcp_listen(char host[static 1]);
 i32 tcp_connect(char host[static 1]);
 
 /*
+ * accept a client using server fd
+ * (lose the address struct info)
+ */
+i32 tcp_accept(i32 serverfd);
+
+/*
  * send data to connfd
  * adding a newline
  *
