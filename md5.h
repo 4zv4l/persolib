@@ -46,4 +46,10 @@ i32 md5_from_file(const char filename[static 1], unsigned char[static 16]);
  * print error to stderr and return error code otherwise
  */
 i32 md5_from_str(const char str[static 1], unsigned char[static 16]);
+/*
+ * compute md5 of string (MUST be 0 terminated)
+ * return hex digest if ok
+ * print error to stderr and return error code otherwise
+ */
+string md5_from_str_hex(const char str[static 1]);
 #endif

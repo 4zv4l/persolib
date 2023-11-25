@@ -105,3 +105,18 @@ md5_from_str(const char str[static 1], unsigned char digest[static 16])
 
     return 1;
 }
+
+string
+md5_from_str_hex(const char str[static 1])
+{
+    unsigned char digest[MD5_DIGEST_LEN] = {0};
+    string hex_digest = malloc((MD5_DIGEST_LEN*2)+1);
+    if (!hex_digest)
+        return fprintf(stderr, "couldnt alloc hex_digest\n"), (string)0;
+
+    if (!md5_from_str(str, digest))
+        return fprintf(stderr, "couldnt get md5 digest for %s\n", str), (string)0;
+
+    md5_digest_hex(digest, hex_digest);
+    return hex_digest;
+}
