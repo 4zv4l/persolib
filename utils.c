@@ -26,6 +26,15 @@ ptr_len(void *data, usize size)
     return count;
 }
 
+bool
+ends_with(char s[static 1], char c)
+{
+    usize len = strlen(s);
+    if (s[len-1] == c)
+        return true;
+    return false;
+}
+
 string
 chomp(char str[static 1])
 {

@@ -77,6 +77,11 @@ void *dupcopy(void *data, usize size);
 usize ptr_len(void *data, usize size);
 
 /*
+ * return true if string ends with c
+ */
+bool ends_with(char s[static 1], char c);
+
+/*
  * remove last newline from string
  */
 string chomp(char str[static 1]);
