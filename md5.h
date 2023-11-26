@@ -29,11 +29,11 @@ void md5_digest_ex(const unsigned char digest[static 16], const char str[static 
 /*
  * return if digest for string match or not
  */
-bool md5_expect(const char text[static 1], const unsigned char expected[static 1]);
+bool md5_expect(const char text[static 1], const unsigned char expected[static 16]);
 /*
  * return if digest (in hex format) for string match or not
  */
-bool md5_expect_hex(const char text[static 1], const unsigned char expected_hex[static 1]);
+bool md5_expect_hex(const char text[static 1], const unsigned char expected_hex[static 32]);
 /*
  * compute md5 from given filename
  * return 1 if ok

@@ -36,7 +36,7 @@ md5_digest_ex(const unsigned char digest[static 16], const char str[static 1])
 }
 
 bool
-md5_expect(const char text[static 1], const unsigned char expected[static 1])
+md5_expect(const char text[static 1], const unsigned char expected[static 16])
 {
     unsigned char digest[MD5_DIGEST_LEN+1] = {0};
 
@@ -47,7 +47,7 @@ md5_expect(const char text[static 1], const unsigned char expected[static 1])
 }
 
 bool
-md5_expect_hex(const char text[static 1], const unsigned char expected_hex[static 1])
+md5_expect_hex(const char text[static 1], const unsigned char expected_hex[static 32])
 {
     unsigned char digest[MD5_DIGEST_LEN+1]       = {0};
     unsigned char expected[MD5_DIGEST_LEN+1]     = {0};
