@@ -10,14 +10,15 @@
 
 #include "types.h"
 
-#ifndef LOGGING
-#include "logging.h"
-#endif
-
 // if lower than -std=c2x c23
 #if __STDC_VERSION__ <= 201710L
     typedef enum { false, true } bool;
 #endif
+
+#ifndef LOGGING
+#include "logging.h"
+#endif
+
 
 // foreach for array (known size)
 #define foreach(var, arr)                                                   \

@@ -117,6 +117,6 @@ md5_from_str_hex(const char str[static 1])
     if (!md5_from_str(str, digest))
         return fprintf(stderr, "couldnt get md5 digest for %s\n", str), (string)0;
 
-    md5_digest_hex(digest, hex_digest);
+    md5_digest_hex(digest, (unsigned char*)hex_digest);
     return hex_digest;
 }
