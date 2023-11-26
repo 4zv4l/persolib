@@ -15,9 +15,8 @@
 #endif
 
 // if lower than -std=c2x c23
-#if __STDC_VERSION__ <= 202311L
-    #define bool _Bool
-    enum { false, true };
+#if __STDC_VERSION__ <= 201710L
+    typedef enum { false, true } bool;
 #endif
 
 // foreach for array (known size)
